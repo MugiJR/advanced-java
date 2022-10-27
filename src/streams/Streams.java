@@ -3,6 +3,7 @@ package streams;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.IntSupplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -52,5 +53,18 @@ public class Streams {
         IntStream.range(0, 100)
                 .takeWhile(n -> n < 45)
                 .forEach(System.out::println);
+
+        // IntStream --> storing into int[] array
+        System.out.println("IntStream --> storing into int[] array :-");
+        int[] array = IntStream.iterate(1, n -> n + 1).limit(10).toArray();
+        System.out.println(Arrays.toString(array));
+
+        String[] stringArr = Stream.of("Hi", "helo", "world").toArray(String[]::new);
+        System.out.println(Arrays.toString(stringArr));
+
+        IntStream.iterate(1, n-> n+1).flatMap(n -> IntStream.of(n,n)).limit(5).forEach(System.out::println);
+
+        boolean allMatch = Stream.generate(() -> ThreadLocalRandom.current().nextInt()).parallel().limit(1000).allMatch(n -> n % 1000 == 0);
+        System.out.println(allMatch);
     }
 }
