@@ -15,7 +15,6 @@ public class SaveToFile {
             String line = (String)ois.readObject();
 
             System.out.println("Then number is  "+num+" and line is "+line);
-
         }
     }
 }
