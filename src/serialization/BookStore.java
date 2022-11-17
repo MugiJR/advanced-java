@@ -34,8 +34,8 @@ public class BookStore implements BookInterface{
     @Override
     public boolean loadBooks(String fileName) {
         try {
-            load(fileName);
-            return true;
+            int booksRetrivedFromFile = load(fileName);
+            return booksRetrivedFromFile == bookMap.size();
         }
         catch (IOException | ClassNotFoundException ex) {
             ex.printStackTrace();
@@ -46,16 +46,22 @@ public class BookStore implements BookInterface{
 
     private void save(String fileName) throws IOException{
         try(var oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
-            for (Map.Entry<String,Book> entry : bookMap.entrySet())
-                oos.writeObject(entry.getValue().toString());
+//            for (Map.Entry<String,Book> entry : bookMap.entrySet())
+//                oos.writeObject(entry.getValue());
+            oos.writeObject(bookMap);
+            oos.flush();
         }
     }
 
 
-    private void load(String fileName) throws IOException, ClassNotFoundException {
-        //Todo - It reads one book only at the moment
+    private int load(String fileName) throws IOException, ClassNotFoundException {
         try(var ois = new ObjectInputStream(new FileInputStream(fileName))) {
-                   System.out.println(ois.readObject().toString());
+                var obj = (HashMap<String, Book>)ois.readObject();
+//                for (Map.Entry<String,Book> entry : bookMap.entrySet())
+//                {
+//                    System.out.println(entry.getValue().toString());
+//                }
+                return obj.size();
         }
     }
 
