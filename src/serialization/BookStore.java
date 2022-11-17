@@ -1,13 +1,16 @@
 package serialization;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class BookStore implements BookInterface{
-    Map<String, Book> bookMap = new HashMap<>();
+    private Map<String, Book> bookMap;
+
+    public BookStore() {
+        bookMap = new HashMap<>();
+    }
 
     @Override
     public void addSomeBooks() {
@@ -17,7 +20,6 @@ public class BookStore implements BookInterface{
                 new Book("Book4", "author3", 2003,120)
         );
         predefinedBooks.forEach(book -> bookMap.put(book.getTitle(),book));
-        System.out.println("Predefined books have been loaded into the Map");
     }
 
     @Override
@@ -43,23 +45,34 @@ public class BookStore implements BookInterface{
         return false;
     }
 
+    public Boolean isBookAvailable(String bookName) {
+         return bookMap.containsKey(bookName);
+    }
+
+    public Book getBook(String bookName) {
+        return bookMap.get(bookName);
+    }
+
+    public void addBook(Book book) {
+        bookMap.put(book.getTitle(), book);
+    }
+
 
     private void save(String fileName) throws IOException{
         try(var oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
-//            for (Map.Entry<String,Book> entry : bookMap.entrySet())
-//                oos.writeObject(entry.getValue());
             oos.writeObject(bookMap);
             oos.flush();
         }
     }
 
 
+    @SuppressWarnings("unchecked") // to avoid obj casting warning "unchecked"
     private int load(String fileName) throws IOException, ClassNotFoundException {
         try(var ois = new ObjectInputStream(new FileInputStream(fileName))) {
-                var obj = (HashMap<String, Book>)ois.readObject();
+                var obj = (HashMap<String, Book>) ois.readObject();
 //                for (Map.Entry<String,Book> entry : bookMap.entrySet())
 //                {
-//                    System.out.println(entry.getValue().toString());
+//                    System.out.println(entry.getKey() + " " + entry.getValue().toString());
 //                }
                 return obj.size();
         }
