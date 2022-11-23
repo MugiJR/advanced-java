@@ -1,32 +1,29 @@
-package lamdas;
+package trainsolution;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static lamdas.Train.*;
-import static lamdas.TrainClientServer.*;
+import static trainsolution.Train.*;
+import static trainsolution.TrainClientServer.*;
 
 public class TrainServer {
 
-    public static void main(String[] args) throws IOException {
-        var PORT = 12345;
+    public static void startServer(int PORT) throws IOException {
         try (
                 var ss = new ServerSocket(PORT);
                 ){
             while(true) {
                 var s = ss.accept();
-                new Thread(() -> startServer(s)).start();
+                new Thread(() -> handleClient(s)).start();
             }
         }
     }
 
-    private static void startServer(Socket s)  {
+    private static void handleClient(Socket s)  {
         try(
                 var ois = new ObjectInputStream(s.getInputStream());
                 var oos = new ObjectOutputStream(s.getOutputStream());
@@ -67,11 +64,6 @@ public class TrainServer {
 
     private static void loadAndSendTrains(String filename, ObjectOutputStream oos) throws IOException, ClassNotFoundException {
         var trains = load(filename);
-//        oos.write(trains.size());
-//        for (Train train : trains) {
-//            System.out.println(train);
-//            oos.writeObject(train);
-//        }
         oos.writeObject(trains);
         oos.flush();
 

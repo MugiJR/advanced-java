@@ -1,11 +1,11 @@
-package lamdas;
+package trainsolution;
 
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 
-import static lamdas.Train.*;
+import static trainsolution.Train.*;
 
 public class TrainTestMain {
     public static void main(String[] args) {

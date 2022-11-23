@@ -1,18 +1,15 @@
-package lamdas;
-import org.junit.jupiter.api.Assertions;
+package trainsolution;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
-import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static lamdas.Train.*;
+import static trainsolution.Train.*;
 
 public class TrainTest {
 
